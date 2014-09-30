@@ -1,6 +1,7 @@
 GET     /tables                               controllers.Tables.getTables
 GET     /table/:name                          controllers.Tables.getTableContentByName(name:String)
 GET     /table/:name/columns                  controllers.Tables.getTableColumns(name:String)
+POST    /query                                controllers.Tables.query
 
 
 

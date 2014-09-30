@@ -3,6 +3,7 @@ package controllers
 import test.{Specification, App}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.libs.json.Json
 
 
 /**
@@ -38,6 +39,30 @@ class TablesSpec extends Specification {
       val request = FakeRequest(GET, "/table/books/columns" )
       val response = route(request).get
       status(response) mustEqual OK
+    }
+  }
+
+
+  "POST /query" should {
+    val validJson = Json.obj( "query" -> "SELECT * FROM books")
+    val wrongQuery = Json.obj( "query" -> "SELECT * FROM wrongTable")
+
+    "make a valid query" in new App {
+      val request = FakeRequest(POST, "/query" ).withJsonBody(validJson)
+      val response = route(request).get
+      status(response) mustEqual OK
+    }
+
+    "return bad request when sql statement is wrong" in new App {
+      val request = FakeRequest(POST, "/query" ).withJsonBody(wrongQuery)
+      val response = route(request).get
+      status(response) mustEqual BAD_REQUEST
+    }
+
+    "return bad request when there is no parameter" in new App {
+      val request = FakeRequest(POST, "/query" )
+      val response = route(request).get
+      status(response) mustEqual BAD_REQUEST
     }
   }
 

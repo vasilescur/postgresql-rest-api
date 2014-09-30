@@ -3,6 +3,7 @@ package controllers
 import play.api.mvc.{Action, Controller}
 import models.Table
 import play.api.libs.json.{JsValue, Json}
+import scala.concurrent.Future
 
 /**
  * Created by Engin Yoeyen on 23/09/14.
@@ -29,6 +30,17 @@ object Tables extends Controller{
     dao.DAO.getTableContentByName(dao.QueryBuilder.select(name)) map {
       case a:JsValue => Ok(a)
       case _ => BadRequest("Bad request wrong table name or connection error")
+    }
+  }
+
+  def query = Action.async(parse.json) { request =>
+    (request.body \ "query").asOpt[String].map { q =>
+        dao.DAO.getTableContentByName(q) map {
+          case a:JsValue => Ok(a)
+          case _ => BadRequest("Bad request wrong table name or connection error")
+        }
+    }.getOrElse {
+      Future.successful( BadRequest("Missing parameter [query]") )
     }
   }
 
