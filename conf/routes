@@ -1,0 +1,8 @@
+GET     /tables                               controllers.Tables.getTables
+GET     /table/:name                          controllers.Tables.getTableContentByName(name:String)
+GET     /table/:name/columns                  controllers.Tables.getTableColumns(name:String)
+
+
+
+GET     /                           controllers.Application.index
+GET     /*file                      controllers.Assets.at(path="/public", file)

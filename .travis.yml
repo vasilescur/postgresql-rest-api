@@ -1,0 +1,7 @@
+language: scala
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database booktown;' -U postgres
+
+script: "sbt coveralls"
