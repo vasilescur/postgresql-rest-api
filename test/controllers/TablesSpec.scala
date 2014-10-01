@@ -31,14 +31,20 @@ class TablesSpec extends Specification {
       val response = route(request).get
       status(response) mustEqual BAD_REQUEST
     }
-
   }
+
 
   "GET /table/:name/columns" should {
     "return list of columns" in new App {
       val request = FakeRequest(GET, "/table/books/columns" )
       val response = route(request).get
       status(response) mustEqual OK
+    }
+
+    "return Bad request when table does not exist" in new App {
+      val request = FakeRequest(GET, "/table/wrongTableName/columns" )
+      val response = route(request).get
+      status(response) mustEqual BAD_REQUEST
     }
   }
 
@@ -67,6 +73,27 @@ class TablesSpec extends Specification {
   }
 
 
+
+  "GET /table/:name/:row/:filter " should {
+    "return list of rows based on request" in new App {
+      val request = FakeRequest(GET, "/table/books/id/7809" )
+      val response = route(request).get
+      status(response) mustEqual OK
+    }
+
+    "return Bad request when table does not exist" in new App {
+      val request = FakeRequest(GET, "/table/books2/id/7809" )
+      val response = route(request).get
+      status(response) mustEqual BAD_REQUEST
+    }
+    /* FIXED
+    "return Bad request when column does not exist" in new App {
+      val request = FakeRequest(GET, "/table/books/id2/7809" )
+      val response = route(request).get
+      status(response) mustEqual BAD_REQUEST
+    }
+*/
+  }
 
 
 

@@ -2,11 +2,9 @@ package controllers
 
 import test._
 
-import play.api.mvc._
 import play.api.test._
 import play.api.test.Helpers._
 
-import scala.concurrent.{Await,ExecutionContext}
 
 class ApplicationSpec extends Specification {
 

@@ -28,7 +28,7 @@ object DAO {
 
 
 
-  def getTableContentByName(statement:String) = Future {
+  def execute(statement:String) = Future {
     val list = DB.withConnection { implicit connection =>
 
       val values  = SQL(statement)
