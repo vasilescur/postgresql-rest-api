@@ -1,10 +1,9 @@
-GET     /tables                               controllers.Tables.getTables
-GET     /table/:name                          controllers.Tables.getTableContentByName(name:String)
-GET     /table/:name/columns                  controllers.Tables.getTableColumns(name:String)
-GET     /table/:name/:column/:filter             controllers.Tables.filterByColumn(name:String, column:String, filter:String)
+GET     /tables                               controllers.Application.getTables
+GET     /table/:name                          controllers.Application.getTableContentByName(name:String)
+GET     /table/:name/columns                  controllers.Application.getTableColumns(name:String)
+GET     /table/:name/:column/:filter          controllers.Application.filterByColumn(name:String, column:String, filter:String)
 
-POST    /query                                controllers.Tables.query
-
+POST    /query                                controllers.Application.query
 
 
 GET     /                           controllers.Application.index

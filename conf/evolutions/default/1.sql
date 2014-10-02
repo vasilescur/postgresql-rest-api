@@ -17,7 +17,7 @@ CREATE TABLE books (
 INSERT INTO books (id, title, author_id, subject_id)
 VALUES
 (7808, 'The Shining',	4156,	9),
-(7809, 'Franklin in the Dark',	4159,	2);
+(4513, 'Dune',	1866,	15);
 
 
 # --- !Downs
