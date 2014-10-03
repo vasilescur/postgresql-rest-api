@@ -25,10 +25,22 @@ class DaoSpec extends Specification{
 
   "Table.execute" should {
 
-    "return some table content" in new App {
+    "return table content" in new App {
       val result = DAO.execute(Q.select("books")) map {
         case a:List[Row]   => {
-          a.flatMap(b => List(b.toJson())) mustEqual TestData.jsonList
+          a.size mustEqual 15
+          success
+        }
+        case _ => failure("Table should exist and there should be some content" )
+      }
+      sync { result }
+    }
+
+    "return partial table content" in new App {
+      val result = DAO.execute(Q.selectWhere("books","id","7808")) map {
+        case a:List[Row]   => {
+          a.size mustEqual 1
+          a.flatMap(b => List(b.toJson())) mustEqual List(Some(TestData.jsonObject1))
           success
         }
         case _ => failure("Table should exist and there should be some content" )
