@@ -1,8 +1,23 @@
 
+---Database schema is retrieved from following URL, and only part of the database schema is used for test purpose
 ---http://www.commandprompt.com/ppbook/booktown.sql
 ---http://www.commandprompt.com/ppbook/
 
 # --- !Ups
+
+CREATE TABLE alternate_stock (
+    isbn text,
+    cost numeric(5,2),
+    retail numeric(5,2),
+    stock integer
+);
+
+CREATE TABLE authors (
+    id integer NOT NULL,
+    last_name text,
+    first_name text
+);
+
 
 CREATE TABLE books (
     id integer NOT NULL,
@@ -10,6 +25,57 @@ CREATE TABLE books (
     author_id integer,
     subject_id integer
 );
+
+CREATE TABLE book_backup (
+    id integer,
+    title text,
+    author_id integer,
+    subject_id integer
+);
+
+CREATE TABLE book_queue (
+    title text NOT NULL,
+    author_id integer,
+    subject_id integer,
+    approved boolean
+);
+
+CREATE TABLE customers (
+    id integer NOT NULL,
+    last_name text,
+    first_name text
+);
+
+
+CREATE TABLE daily_inventory (
+    isbn text,
+    is_stocked boolean
+);
+
+CREATE TABLE editions (
+    isbn text NOT NULL,
+    book_id integer,
+    edition integer,
+    publisher_id integer,
+    publication date,
+    type character(1),
+    CONSTRAINT integrity CHECK (((book_id IS NOT NULL) AND (edition IS NOT NULL)))
+);
+
+CREATE TABLE states (
+    id integer NOT NULL,
+    name text,
+    abbreviation character(2)
+);
+
+
+CREATE TABLE stock (
+    isbn text NOT NULL,
+    cost numeric(5,2),
+    retail numeric(5,2),
+    stock integer
+);
+
 
 
 
