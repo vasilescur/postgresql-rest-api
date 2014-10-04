@@ -111,4 +111,39 @@ class ApplicationSpec extends Specification {
 
   }
 
+
+  "GET /table/:name/search/:column/:text " should {
+    "return seach result" in new App {
+      val request = FakeRequest(GET, "/table/books/search/title/the" )
+      val response = route(request).get
+      status(response) mustEqual OK
+    }
+
+    "return NO_CONTENT (204) when there is no content as result of execution" in new App {
+      val request = FakeRequest(GET, "/table/books/search/title/NOMATCH" )
+      val response = route(request).get
+      status(response) mustEqual NO_CONTENT
+    }
+
+
+    "return result when no language specified-test with a stop word" in new App {
+      val request = FakeRequest(GET, "/table/books/search/title/the" )
+      val response = route(request).get
+      status(response) mustEqual  OK
+    }
+
+    "not search stop words, language parameter has given" in new App {
+      val request = FakeRequest(GET, "/table/books/search/title/the?language=english" )
+      val response = route(request).get
+      status(response) mustEqual  NO_CONTENT
+    }
+
+    "search if is not a stop word in a given language" in new App {
+      val request = FakeRequest(GET, "/table/books/search/title/the?language=german" )
+      val response = route(request).get
+      status(response) mustEqual  OK
+    }
+
+  }
+
 }

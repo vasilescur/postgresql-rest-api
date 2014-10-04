@@ -2,6 +2,7 @@ GET     /tables                               controllers.Application.getTables
 GET     /table/:name                          controllers.Application.getTableContentByName(name:String)
 GET     /table/:name/columns                  controllers.Application.getTableColumns(name:String)
 GET     /table/:name/:column/:filter          controllers.Application.filterByColumn(name:String, column:String, filter:String)
+GET     /table/:name/search/:column/:text     controllers.Application.search(name:String, column:String, text:String, language:Option[String])
 
 POST    /query                                controllers.Application.query
 

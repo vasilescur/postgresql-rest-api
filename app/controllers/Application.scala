@@ -19,6 +19,7 @@ object Application extends Controller {
 
   def filterByColumn(name:String, column:String, filter:String) = execute(Q.selectWhere(name,column,filter))
 
+  def search(name:String, column:String, text:String, language:Option[String]) = execute(Q.search(name,column,text,language))
 
 
   def getTables = Action.async {
