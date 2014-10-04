@@ -1,6 +1,8 @@
 package models
 
 import anorm.SqlParser._
+import utils.Config
+
 // IMPORTANT import this to have the required tools in your scope
 import play.api.libs.json._
 // imports required functional generic structures
@@ -19,8 +21,8 @@ object Table {
 
   def simpleExtractor(test: Table): Option[ (String, String,String)] =
     Some(test.table_name,
-      "http://localhost:9000/table/"+test.table_name,
-      "http://localhost:9000/table/"+test.table_name+"/columns"
+      Config.baseUrl+"/table/"+test.table_name,
+      Config.baseUrl+"/table/"+test.table_name+"/columns"
     )
 
   implicit val tableFormat = (
