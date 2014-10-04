@@ -1,9 +1,9 @@
 import org.scoverage.coveralls.CoverallsPlugin.coverallsSettings
 import scoverage.ScoverageSbtPlugin._
 
-name := "pg-rest-client"
+name := "pg-rest-api"
 
-version := "1.0-SNAPSHOT"
+version := "0.1.0"
 
 scalaVersion := "2.10.3"
 
