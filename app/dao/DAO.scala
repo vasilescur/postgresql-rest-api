@@ -2,16 +2,15 @@ package dao
 
 import models._
 import anorm._
-import play.api.libs.json.{Json, JsObject}
 
 import scala.concurrent.Future
+import play.api.http.Status.BAD_REQUEST
 
 // IMPORTANT import this to have the required tools in your scope
 import play.api.libs.json._
 // imports required functional generic structures
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Writes._
-import models.Row
 
 /**
  * Created by Engin Yoeyen on 30/09/14.
@@ -28,6 +27,7 @@ object DAO {
 
 
   def execute(statement:String) = Future {
+    Logger.debug(statement)
     val list = DB.withConnection { implicit connection =>
       val values  = SQL(statement)
 
@@ -35,7 +35,7 @@ object DAO {
         val jsonList = values().map ( row => {
           val rowData = new models.Row()
           for (columnList <- row.metaData.ms) {
-            rowData.updateDynamic(columnList.column.alias.get)(extractValue(columnList.clazz,row,columnList.column.alias.get))
+            rowData.update(columnList.column.alias.get)(extractValue(columnList.clazz,row,columnList.column.alias.get))
           }
           rowData
         }

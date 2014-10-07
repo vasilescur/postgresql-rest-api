@@ -10,10 +10,12 @@ class Row {
 
   private var map = Map.empty[String, Any]
 
-  def selectDynamic(name: String) =
-    map get name getOrElse sys.error("method not found")
+  def select(name: String) = {
+    map get name getOrElse Logger.error("method not found")
+  }
 
-  def updateDynamic(name: String)(value: Any) {
+
+  def update(name: String)(value: Any) {
     map += name -> value
   }
 

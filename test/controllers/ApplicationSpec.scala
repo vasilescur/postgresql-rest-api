@@ -32,7 +32,7 @@ class ApplicationSpec extends Specification {
       status(response) mustEqual OK
     }
 
-    "return Bad request when table does not exist" in new App {
+    "return BAD_REQUEST when table does not exist" in new App {
       val request = FakeRequest(GET, "/table/wrongTableName" )
       val response = route(request).get
       status(response) mustEqual BAD_REQUEST
@@ -40,13 +40,24 @@ class ApplicationSpec extends Specification {
   }
 
 
-  "GET /table/:name/columns" should {
-    "return list of columns" in new App {
-      val request = FakeRequest(GET, "/table/books/columns" )
+  "GET /table/:name?f=columns" should {
+    "calls the function columns and return the result" in new App {
+      val request = FakeRequest(GET, "/table/books?f=columns" )
       val response = route(request).get
       status(response) mustEqual OK
     }
   }
+
+
+
+  "GET /table/:name?f=WrongFunction" should {
+    "return BAD_REQUEST when function does not exist" in new App {
+      val request = FakeRequest(GET, "/table/books?f=WrongFunction" )
+      val response = route(request).get
+      status(response) mustEqual BAD_REQUEST
+    }
+  }
+
 
 
   "POST /query" should {
@@ -81,8 +92,6 @@ class ApplicationSpec extends Specification {
 
 
 
-
-
   "GET /table/:name/:row/:filter " should {
     "return list of rows based on request" in new App {
       val request = FakeRequest(GET, "/table/books/id/7808" )
@@ -97,7 +106,7 @@ class ApplicationSpec extends Specification {
     }
 
 
-    "return Bad request when table does not exist" in new App {
+    "return BAD_REQUEST when table does not exist" in new App {
       val request = FakeRequest(GET, "/table/books2/id/7809" )
       val response = route(request).get
       status(response) mustEqual BAD_REQUEST
@@ -107,41 +116,6 @@ class ApplicationSpec extends Specification {
       val request = FakeRequest(GET, "/table/books/id2/7809" )
       val response = route(request).get
       status(response) mustEqual BAD_REQUEST
-    }
-
-  }
-
-
-  "GET /table/:name/search/:column/:text " should {
-    "return seach result" in new App {
-      val request = FakeRequest(GET, "/table/books/search/title/the" )
-      val response = route(request).get
-      status(response) mustEqual OK
-    }
-
-    "return NO_CONTENT (204) when there is no content as result of execution" in new App {
-      val request = FakeRequest(GET, "/table/books/search/title/NOMATCH" )
-      val response = route(request).get
-      status(response) mustEqual NO_CONTENT
-    }
-
-
-    "return result when no language specified-test with a stop word" in new App {
-      val request = FakeRequest(GET, "/table/books/search/title/the" )
-      val response = route(request).get
-      status(response) mustEqual  OK
-    }
-
-    "not search stop words, language parameter has given" in new App {
-      val request = FakeRequest(GET, "/table/books/search/title/the?language=english" )
-      val response = route(request).get
-      status(response) mustEqual  NO_CONTENT
-    }
-
-    "search if is not a stop word in a given language" in new App {
-      val request = FakeRequest(GET, "/table/books/search/title/the?language=german" )
-      val response = route(request).get
-      status(response) mustEqual  OK
     }
 
   }

@@ -19,17 +19,17 @@ object Table {
 
   implicit val jsonFormat = Json.format[Table]
 
-  def simpleExtractor(test: Table): Option[ (String, String,String)] =
+  def tableUnlift(test: Table): Option[ (String, String,String)] =
     Some(test.table_name,
       Config.baseUrl+"/table/"+test.table_name,
-      Config.baseUrl+"/table/"+test.table_name+"/columns"
+      Config.baseUrl+"/table/"+test.table_name+"?f=columns"
     )
 
   implicit val tableFormat = (
     (__ \ "name").write[String] and
       (__ \ "data").write[String] and
       (__ \ "columns").write[String]
-    )(unlift(simpleExtractor))
+    )(unlift(tableUnlift))
 
 
   val table =
