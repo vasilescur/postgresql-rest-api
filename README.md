@@ -1,120 +1,93 @@
 PostgreSQL HTTP Rest API [![Build Status][travis-ci_status_img]][travis-ci_status] [![Coverage Status][coveralls_status_img]][coveralls_status]
 ======
 
-This is an HTTP Rest API for PostgreSQL databases.
+This is an HTTP Rest API for PostgreSQL databases. This application allows you fetch your data from your database immediately via Rest API as in JSON format without developing any web middle layer.
 
+* [Why](#why)
+* [API](#api)
+  * [Functions](#functions)
+  * [Response](#response)
+* [Installation](#installation)
+  * [Configuration](#configuration)
+* [TODO](#todo)
+
+
+#Why?<a id="why"></a>
 Benefit of an HTTP API is to allow easy access to existing data. This means accessing data without bulding a web API (e.g. accessing data from Mobile app, rapid prototyping, for public data), furthermore allows you to access to data with tools that don't support the PostgreSQL protocol such as curl, web browsers.
 
+You can check following article, it is where the idea comes from:
+[http://wiki.postgresql.org/wiki/HTTP_API](http://wiki.postgresql.org/wiki/HTTP_API)
+
+PS: Current implementation does not have any security layer, meaning you will be exposing your database.
 
 
-## Securit of the Database
-Current implementation does not have any security layer, meaning you will be exposing your database.
 
-## Installation
-You start the application with a configuraiton file, which contains your database credentials. Only other requirement is JDK 6 or later. 
 
-1. Download the application(pg-rest-api-0.1.0.tgz) from [relese-page] and uncompress it
-2. Prepare your configuration file (e.g. your database settings)
-3. Set the port and config file path and run it 
+#API<a id="api"></a>
 
 
 ```
-/pg-rest-api-0.1.0/bin/pg-rest-api  -Dhttp.port=8081 -Dconfig.file=/path/to/config.conf 
-```
+# Returns all tables
+GET http://localhost:9000/tables
 
+# Returns all rows from the books table
+GET  http://localhost:9000/table/books
+
+# Returns all rows from book table where subject_id is equal to 2
+GET  http://localhost:9000/table/books/subject_id/2
  
-Please refer to last section for configruation file.
+# Returns 50 rows from the books table
+GET  http://localhost:9000/table/books?limit=50
+
+# Returns 50 rows from book table where subject_id is equal to 2
+GET  http://localhost:9000/table/books/subject_id/2?limit=50
+
+# Returns total number of rows
+GET  http://localhost:9000/table/books?f=count
+
+# Returns total number of rows where subject_id is equal to 2
+GET  http://localhost:9000/table/books/subject_id/2?f=count
+
+# Returns smallest value of price field in the table
+GET  http://localhost:9000/table/books?f=min&field=price
+
+# Returns smallest value of price field, where subject_id is equal to 2
+GET  http://localhost:9000/table/books/subject_id/2?f=min&field=price
+
+# Full text search on field title 
+GET  http://localhost:9000/table/books/title/python?f=search
+
+# Full text search on field title with language support
+GET  http://localhost:9000/table/books/title/python?f=search&language=english
 
 
-## How to fetch data
-
-###List of Tables
-You can fetch list of tables like this:
-
-	- http://localhost:9000/tables
-	
-which will return 
-
-```
-[
-    {
-        "name": "authors",
-        "data": "http://localhost:9000/table/authors",
-        "columns": "http://localhost:9000/table/authors/columns"
-    },
-    {
-        "name": "books",
-        "data": "http://localhost:9000/table/books",
-        "columns": "http://localhost:9000/table/books/columns"
-    },
-    {
-        "name": "customers",
-        "data": "http://localhost:9000/table/customers",
-        "columns": "http://localhost:9000/table/customers/columns"
-    },
-    ...
-]
-```
+# Will execute any query and return the result
+POST http://localhost:9000/query
+Format:
+{
+    "query": "SELECT * FROM books WHERE id=7808"
+}
 
 
-###Table Content
-To get table content
-
-	- http://localhost:9000/table/books
-	
-which will return 
+# Will return all the columns in the table
+GET  http://localhost:9000/table/books?columns
 
 ```
-[
-    {
-        "id": 7808,
-        "title": "The Shining",
-        "author_id": 4156,
-        "subject_id": 9
-    },
-    {
-        "id": 4513,
-        "title": "Dune",
-        "author_id": 1866,
-        "subject_id": 15
-    },
-    ...
-]
-```
+
+###Functions<a id="functions"></a>
+
+* count 
+* min 
+* max 
+* avg
+* sum
+* length
+* md5
 
 
-###Filter Table Content
-You can filter the content by giving column name, following url will return the books that has subject_id 4
 
-	- http://localhost:9000/table/books/subject_id/4
-	
-which will return 
-
-```
-[
-    {
-        "id": 41472,
-        "title": "Practical PostgreSQL",
-        "author_id": 1212,
-        "subject_id": 4
-    },
-    {
-        "id": 41473,
-        "title": "Programming Python",
-        "author_id": 7805,
-        "subject_id": 4
-    },
-    ....
-]
-```
-
-
-###Search in Table Content
-You can also make text search, this will use PostgreSQL full text search support. Following query will search keyword python in title in books table 
-
-	- http://localhost:9000/table/books/search/title/python
-	
-which will return 
+### Response<a id="response"></a>
+Here is an example response from an API call.
 
 ```
 [
@@ -133,78 +106,33 @@ which will return
 ]
 ```
 
-You can also provide language parameter which will be used to normalize text and ignore stop words for search. For instance;
 
-	- http://localhost:9000/table/books/search/title/the?language=english
+Currently API returns following HTTP status codes
+
+* 200 OK
+* 204 No Content
+* 400 Bad Request
+* 404 Not Found
+ 
 
 
 
-###Get Columns
-To get columns that belongs a table
 
-	- http://localhost:9000/table/books/columns
-	
-which will return 
+## Installation<a id="installation"></a>
+You start the application with a configuraiton file, which contains your database credentials. Only other requirement is JDK 6 or later. 
+
+1. Download the application(pg-rest-api-0.2.0.tgz) from [relese-page](https://github.com/enginyoyen/postgresql-rest-api/releases/tag/v0.2.0) and uncompress it
+2. Prepare your configuration file (e.g. your database settings)
+3. Set the port and config file path and run it 
+
 
 ```
-[
-    {
-        "column_name": "id",
-        "data_type": "integer"
-    },
-    {
-        "column_name": "title",
-        "data_type": "text"
-    },
-    {
-        "column_name": "author_id",
-        "data_type": "integer"
-    },
-    {
-        "column_name": "subject_id",
-        "data_type": "integer"
-    }
-]
+/pg-rest-api-0.1.0/bin/pg-rest-api  -Dhttp.port=8081 -Dconfig.file=/path/to/config.conf 
 ```
 
 
 
-You can also provide language parameter which will be used to normalize text and ignore stop words for search. For instance;
-
-	- http://localhost:9000/table/books/search/title/the?language=english
-
-
-###Execute a Query
-You can also post a complete SQL query which you want it to be executed, queries can be posted in following format
-
-
-```
-{
-    "query": "SELECT * FROM books WHERE id=7808"
-}
-```
-
-and send it to the:
-
-
-	- http://localhost:9000/query
-
-which will return 
-
-```
-[
-    {
-        "id": 7808,
-        "title": "The Shining",
-        "author_id": 4156,
-        "subject_id": 9
-    }
-]
-```
-
-
-
-## Configuration File
+### Configuration File<a id="configuration"></a>
 
 This is an example configuration file that you can use it.
 
@@ -230,11 +158,10 @@ logger.application = INFO
 ```
 
 
-## TODO
--Pagination 
--Add default functions (e.g. count)
--Show only requested columns not all
--Authentication
+## TODO<a id="todo"></a>
+* Authentication
+* Show only requested columns not all
+
 
 
 [travis-ci_status_img]: https://travis-ci.org/enginyoyen/postgresql-rest-api.svg?branch=master
