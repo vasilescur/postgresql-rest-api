@@ -28,7 +28,7 @@ scalacOptions ++= Seq(
 
 play.Project.playScalaSettings ++ instrumentSettings ++ coverallsSettings
 
-ScoverageKeys.excludedPackages in ScoverageCompile := "<empty>;Reverse.*;views.html.*"
+ScoverageKeys.excludedPackages in ScoverageCompile := "<empty>;Reverse.*;views.html.*;info.schleichardt.*;"
 
 
 

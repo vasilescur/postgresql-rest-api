@@ -10,4 +10,5 @@ object Config {
 
   val baseUrl = config.getString("application.baseUrl")
 
+  val authenticationEnabled = config.hasPath("basic.auth")
 }
