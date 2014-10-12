@@ -76,7 +76,23 @@ CREATE TABLE stock (
     stock integer
 );
 
-
+CREATE TABLE test_data_type (
+    c_smallint smallint,
+    c_integer integer,
+    c_bigint bigint,
+    c_decimal decimal,
+    c_numeric numeric,
+    c_real real,
+    c_serial serial,
+    c_bigserial bigserial,
+    c_character  character(2),
+    c_text text,
+    c_varchar varchar,
+    c_boolean boolean,
+    c_timestamp timestamp,
+    c_date date,
+    c_time time
+);
 
 
 
