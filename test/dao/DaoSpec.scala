@@ -83,5 +83,17 @@ class DaoSpec extends Specification{
     }
 
 
+    "return different type of columns successfully" in new App {
+      val result = DAO.execute(Q.build(Request("test_data_type"))) map {
+        case a:List[Row]   => {
+          a.size mustEqual 1
+          success
+        }
+        case _ => failure("Error converting column data type" )
+      }
+      sync { result }
+    }
+
+
   }
 }

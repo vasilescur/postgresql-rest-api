@@ -40,6 +40,8 @@ CREATE TABLE book_queue (
     approved boolean
 );
 
+
+
 CREATE TABLE customers (
     id integer NOT NULL,
     last_name text,
@@ -80,11 +82,8 @@ CREATE TABLE test_data_type (
     c_smallint smallint,
     c_integer integer,
     c_bigint bigint,
-    c_decimal decimal,
-    c_numeric numeric,
+    c_decimal decimal(4,2),
     c_real real,
-    c_serial serial,
-    c_bigserial bigserial,
     c_character  character(2),
     c_text text,
     c_varchar varchar,
@@ -115,7 +114,20 @@ VALUES
 (41478, 'Perl Cookbook', 7806,4);
 
 
+INSERT INTO test_data_type(
+            c_smallint, c_integer, c_bigint, c_decimal, c_real,
+            c_character, c_text, c_varchar, c_boolean,
+            c_timestamp, c_date, c_time)
+    VALUES (32767, 2147483647, 9223372036854775807, 4.99, 29999.99,
+            'ab', 'text', 'var', true,
+            '2014-10-12 10:23:54', '2014-10-12', '10:23:54');
+
+
+
+
 # --- !Downs
 
 Drop TABLE books;
+Drop TABLE test_data_type;
+
 

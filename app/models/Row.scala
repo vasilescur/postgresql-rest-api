@@ -1,7 +1,8 @@
 package models
 
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsNumber, JsObject, JsValue, Json}
+import java.sql.Timestamp
 
 /**
  * Created by Engin Yoeyen on 02/10/14.
@@ -40,7 +41,13 @@ class Row {
       case a: Int => Json.toJson(a)
       case a: String => Json.toJson(a)
       case a: Boolean => Json.toJson(a)
-      case _ => throw new RuntimeException("Type not serializable.")
+      case a: Timestamp => Json.toJson(a)
+      case a: java.sql.Time => Json.toJson(a)
+      case a: Date => Json.toJson(a)
+      case a: java.math.BigInteger => Json.toJson( a.toString()) //TEMPORARY SOLUTION WRITE
+      case a: java.math.BigDecimal => Json.toJson(JsNumber(a))
+
+      case _ => throw new RuntimeException("Type not serializable : "+a)
     }
   }
 
