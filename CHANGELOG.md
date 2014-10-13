@@ -2,7 +2,9 @@ Change Log
 ===
 
 
-
+### v0.3.0 - 13.10.2014
+* Basic HTTP authentication added
+* More data types are supported
 
 ### v0.2.0 - 09.10.2014
 * limit and order results
