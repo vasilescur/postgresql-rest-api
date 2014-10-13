@@ -9,6 +9,7 @@ This is an HTTP Rest API for PostgreSQL databases. This application allows you f
   * [Response](#response)
 * [Installation](#installation)
   * [Configuration](#configuration)
+  * [Authentication](#authentication)
 * [TODO](#todo)
 
 
@@ -18,7 +19,6 @@ Benefit of an HTTP API is to allow easy access to existing data. This means acce
 You can check following article, it is where the idea comes from:
 [http://wiki.postgresql.org/wiki/HTTP_API](http://wiki.postgresql.org/wiki/HTTP_API)
 
-PS: Current implementation does not have any security layer, meaning you will be exposing your database.
 
 
 
@@ -127,7 +127,7 @@ You start the application with a configuraiton file, which contains your databas
 
 
 ```
-/pg-rest-api-0.1.0/bin/pg-rest-api  -Dhttp.port=8081 -Dconfig.file=/path/to/config.conf 
+/pg-rest-api-0.1.0/bin/pg-rest-api  -Dhttp.port=9000 -Dconfig.file=/path/to/config.conf 
 ```
 
 
@@ -155,12 +155,35 @@ db = {
 
 logger.application = INFO
 
+basic.auth.username="password"
+
 ```
 
 
+### Authentication<a id="authentication"></a>
+Application support Basic HTTP authenticaiton. To enable authentication you can add user credentials into the configuration file, which will automaticly enable authentication. If there is no credentials given at the start of application there will be no authentication. 
+
+
+```
+basic.auth.jane="password" 
+```
+
+In case authentication is enabled, the Authorization header is constructed as follows: ([wikipedia](http://en.wikipedia.org/wiki/Basic_access_authentication))
+
+1. Username and password are combined into a string "username:password"
+2. The resulting string is then encoded using with Base64
+3. The authorization method and a space i.e. "Basic " is then put before the encoded string.
+
+For example, if the user agent uses 'Aladdin' as the username and 'open sesame' as the password then the header is formed as follows:
+
+Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+
+[http://en.wikipedia.org/wiki/Basic_access_authentication]
+
+
 ## TODO<a id="todo"></a>
-* Authentication
-* Show only requested columns not all
+* Find more things to add in todo !
+
 
 
 
