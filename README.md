@@ -121,13 +121,13 @@ Currently API returns following HTTP status codes
 ## Installation<a id="installation"></a>
 You start the application with a configuraiton file, which contains your database credentials. Only other requirement is JDK 6 or later. 
 
-1. Download the application(pg-rest-api-0.2.0.tgz) from [relese-page](https://github.com/enginyoyen/postgresql-rest-api/releases/tag/v0.2.0) and uncompress it
+1. Download the latest release from [relese-page](https://github.com/enginyoyen/postgresql-rest-api/releases) and uncompress it
 2. Prepare your configuration file (e.g. your database settings)
 3. Set the port and config file path and run it 
 
 
 ```
-/pg-rest-api-0.1.0/bin/pg-rest-api  -Dhttp.port=9000 -Dconfig.file=/path/to/config.conf 
+/pg-rest-api-*.*.*/bin/pg-rest-api  -Dhttp.port=9000 -Dconfig.file=/path/to/config.conf 
 ```
 
 
