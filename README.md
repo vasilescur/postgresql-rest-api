@@ -13,7 +13,7 @@ This is an HTTP Rest API(or REST like, as it is not completed yet) for PostgreSQ
 * [TODO](#todo)
 
 
-#Why?<a id="why"></a>
+# Why?<a id="why"></a>
 Benefit of an HTTP API is to allow easy access to existing data. This means accessing data without bulding a web API (e.g. accessing data from Mobile app, rapid prototyping, for public data), furthermore allows you to access to data with tools that don't support the PostgreSQL protocol such as curl, web browsers.
 
 You can check following article, it is where the idea comes from:
@@ -23,7 +23,7 @@ You can check following article, it is where the idea comes from:
 
 
 
-#API<a id="api"></a>
+# API<a id="api"></a>
 
 
 ```
@@ -74,7 +74,7 @@ GET  http://localhost:9000/table/books?columns
 
 ```
 
-###Functions<a id="functions"></a>
+### Functions<a id="functions"></a>
 
 * count 
 * min 
